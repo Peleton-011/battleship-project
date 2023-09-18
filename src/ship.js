@@ -7,7 +7,12 @@ export default class Ship {
 		const newLen = parseInt(len);
 		if (newLen !== Number(len)) {
 			throw new Error(
-				"Ship length of wrong type or in wrong format (" + len + ")"
+				"Wrong type or format (" + len + "), expected a positive int"
+			);
+		}
+		if (newLen < 1) {
+			throw new Error(
+				"Wrong type or format (" + len + "), expected a positive int"
 			);
 		}
 		this._length = newLen;

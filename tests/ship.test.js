@@ -10,7 +10,7 @@ test("Test Ship length 2", () => {
 	expect(ship.length).toBe(2);
 });
 test("Test Ship length (wrong input 1)", () => {
-	expect(() => new Ship(-1)).toThrowError(/length/);
+	expect(() => new Ship(-1)).toThrowError(/type/);
 });
 test("Test Ship length (wrong input 1)", () => {
 	expect(() => new Ship("a")).toThrowError(/type/);
