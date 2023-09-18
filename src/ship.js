@@ -25,6 +25,6 @@ export default class Ship {
 		return num;
 	}
 	_getRandomLength(max) {
-		return Math.floor(Math.random() * max);
+		return Math.floor(Math.random() * max) + 1;
 	}
 }
