@@ -1,6 +1,15 @@
 import { expect, test } from "vitest";
 import GameBoard from "../src/board";
 
-test("sample", () => {
-	expect(0).toBe(0);
+const testBoard = new GameBoard();
+test("Board Size", () => {
+	expect(testBoard.board).toHaveLength(10);
 });
+test("Board Size", () => {
+	expect(testBoard.board[0]).toHaveLength(10);
+});
+test("Boat List", () => {
+	expect(testBoard.ships).toHaveLength(5);
+});
+
+
