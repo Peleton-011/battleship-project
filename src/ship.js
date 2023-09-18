@@ -1,6 +1,15 @@
 export default class Ship {
 	constructor(length) {
 		this.length = length || this._getRandomLength(5);
+		this.hits = 0;
+	}
+
+	isSunk() {
+		return this.hits >= this.length;
+	}
+
+	hit() {
+		this.hits += 1;
 	}
 
 	set length(len) {
