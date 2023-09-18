@@ -1,6 +1,6 @@
 export default class Ship {
 	constructor(length) {
-		this.length = length;
+		this.length = length || this._getRandomLength(5);
 	}
 
 	set length(len) {
@@ -23,5 +23,8 @@ export default class Ship {
 			);
 		}
 		return num;
+	}
+	_getRandomLength(max) {
+		return Math.floor(Math.random() * max);
 	}
 }
