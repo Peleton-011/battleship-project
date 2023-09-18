@@ -4,15 +4,14 @@ export default class Ship {
 	}
 
 	set length(len) {
-		const newLen = parseInt(len);
-
-		this._length = this._testPositiveInt(newLen);
+		this._length = this._testPositiveInt(len);
 	}
 	get length() {
 		return this._length;
 	}
 
-	_testPositiveInt(num) {
+	_testPositiveInt(input) {
+		const num = parseInt(input);
 		if (num !== Number(num)) {
 			throw new Error(
 				"Wrong type or format (" + num + "), expected a positive int"
