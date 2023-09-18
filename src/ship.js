@@ -5,19 +5,24 @@ export default class Ship {
 
 	set length(len) {
 		const newLen = parseInt(len);
-		if (newLen !== Number(len)) {
-			throw new Error(
-				"Wrong type or format (" + len + "), expected a positive int"
-			);
-		}
-		if (newLen < 1) {
-			throw new Error(
-				"Wrong type or format (" + len + "), expected a positive int"
-			);
-		}
-		this._length = newLen;
+
+		this._length = this._testPositiveInt(newLen);
 	}
 	get length() {
 		return this._length;
+	}
+
+	_testPositiveInt(num) {
+		if (num !== Number(num)) {
+			throw new Error(
+				"Wrong type or format (" + num + "), expected a positive int"
+			);
+		}
+		if (num < 1) {
+			throw new Error(
+				"Wrong type or format (" + num + "), expected a positive int"
+			);
+		}
+		return num;
 	}
 }
