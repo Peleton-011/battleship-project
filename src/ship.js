@@ -1,7 +1,10 @@
 export default class Ship {
-	constructor(length) {
+	constructor(length, x, y, rotation) {
 		this.length = length || this._getRandomLength(5);
 		this.hits = 0;
+		this.x = x || null;
+		this.y = y || null;
+		this.rotation = rotation || 0;
 	}
 
 	isSunk() {

@@ -1,7 +1,18 @@
+import Ship from "./ship";
 export default class GameBoard {
 	constructor(size, boatList) {
 		this.board = this._makeBoard(size || 10);
 		this.ships = boatList || [2, 3, 3, 4, 5];
+	}
+
+	get isReady() {
+		return this.ships.every((ship) => !!ship.length);
+	}
+
+	placeShip(len, x, y, rotation) {
+		len = this._testPositiveInt(len);
+		const index = this._testPositiveInt(this.ships.find((a) => a === len));
+		this.ships[index] = new Ship(len, x, y, rotation);
 	}
 
 	_makeBoard(size) {
