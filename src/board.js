@@ -15,6 +15,25 @@ export default class GameBoard {
 		this.ships[index] = new Ship(len, x, y, rotation);
 	}
 
+	_getShipCoords(len, [x, y], rotation) {
+		const coordList = [[x, y]];
+
+		for (let i = 0; i < len - 1; i++) {
+			const last = coordList[coordList.length - 1];
+			coordList.push([
+				rotation % 2 === 0
+					? last[0]
+					: rotation < 2
+					? last[0] + 1
+					: last[0] - 1,
+				rotation % 2 === 1
+					? last[1]
+					: rotation < 2
+					? last[1] - 1
+					: last[1] + 1,
+			]);
+		}
+	}
 	_makeBoard(size) {
 		size = this._testPositiveInt(size);
 		return new Array(size).fill(new Array(size).fill(null));
