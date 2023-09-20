@@ -2,14 +2,20 @@ export default class Ship {
 	constructor(length, x, y, rotation) {
 		this.length = length || this._getRandomLength(5);
 		this.hits = 0;
-		this._coordList = this._getShipCoords(
-			this.length,
-			[this._testPositiveInt(x), this._testPositiveInt(y)],
-			this._testPositiveInt(rotation)
-		) || null;
+		this._coordList =
+			typeof x === "number" &&
+			typeof y === "number" &&
+			typeof rotation === "number"
+				? this.getShipCoords(
+						this.length,
+						[this._testPositiveInt(x), this._testPositiveInt(y)],
+						this._testPositiveInt(rotation)
+				  )
+				: null;
 	}
 
-	_getShipCoords(len, [x, y], rotation) {
+	getShipCoords(len, [x, y], rotation) {
+        if (this._coordList) return this._coordList
 		const coordList = [[x, y]];
 
 		for (let i = 0; i < len - 1; i++) {
@@ -27,6 +33,7 @@ export default class Ship {
 					: last[1] + 1,
 			]);
 		}
+        this._coordList = coordList
 		return coordList;
 	}
 
