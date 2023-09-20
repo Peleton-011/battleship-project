@@ -3,11 +3,11 @@ import Ship from "../src/ship";
 
 //Length
 test("Ship length 1", () => {
-	const ship = new Ship(4);
+	const ship = new Ship(4, 4, 4 , 3);
 	expect(ship.length).toBe(4);
 });
 test("Ship length 2", () => {
-	const ship = new Ship(2);
+	const ship = new Ship(2, 4, 4 , 3);
 	expect(ship.length).toBe(2);
 });
 test("Ship length (wrong input 1)", () => {
@@ -17,12 +17,12 @@ test("Ship length (wrong input 1)", () => {
 	expect(() => new Ship("a")).toThrowError(/type/);
 });
 test("Ship length (no input)", () => {
-	const ship = new Ship();
+	const ship = new Ship(null, 4, 4 , 3);
 	expect(ship.length).toBeTypeOf("number");
 });
 
 //Hits & hit()
-const testShip = new Ship(4);
+const testShip = new Ship(4, 4, 4 , 3);
 test("Hits 1", () => {
 	expect(testShip.hits).toBe(0);
 });
