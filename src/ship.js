@@ -15,25 +15,18 @@ export default class Ship {
 	}
 
 	getShipCoords(len, [x, y], rotation) {
-        if (this._coordList) return this._coordList
-		const coordList = [[x, y]];
+		// if (this._coordList) return this._coordList;
+		const coordList = [];
 
-		for (let i = 0; i < len - 1; i++) {
-			const last = coordList[coordList.length - 1];
-			coordList.push([
-				rotation % 2 === 0
-					? last[0]
-					: rotation < 2
-					? last[0] + 1
-					: last[0] - 1,
-				rotation % 2 === 1
-					? last[1]
-					: rotation < 2
-					? last[1] - 1
-					: last[1] + 1,
-			]);
+		const isRotEven = rotation % 2 === 0;
+
+		for (let i = 0; i < len; i++) {
+			const newX = isRotEven ? x : rotation < 2 ? x + i : x - i;
+
+			const newY = !isRotEven ? y : rotation < 2 ? y - i : y + i;
+			coordList.push([newX, newY]);
 		}
-        this._coordList = coordList
+		this._coordList = coordList;
 		return coordList;
 	}
 
