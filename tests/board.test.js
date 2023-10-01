@@ -11,5 +11,8 @@ test("Board Size", () => {
 test("Boat List", () => {
 	expect(testBoard.ships).toHaveLength(5);
 });
-
+test("Place Boat 1", () => {
+    testBoard.placeShip(1, [1,1], 1)
+	expect(testBoard.board[1][1]).toStrictEqual(testBoard.ships[1]);
+});
 

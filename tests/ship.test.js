@@ -22,7 +22,7 @@ test("Ship length (no input)", () => {
 });
 
 //Hits & hit()
-const testShip = new Ship(4, 4, 4, 3);
+const testShip = new Ship(4, 5, 5, 3);
 test("Hits 1", () => {
 	expect(testShip.hits).toBe(0);
 });
@@ -83,7 +83,7 @@ test.each([
 		],
 	},
 ])("Get ship coordinates, test rotation $orient", ({ orient, result }) => {
-	const tinyTestShip = new Ship(4, 4, 4, 3);
+	const tinyTestShip = new Ship(4, 5, 5, orient);
 	const calc = tinyTestShip.getShipCoords(4, [5, 5], orient);
 	expect(calc).toStrictEqual(result);
 });
