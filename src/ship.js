@@ -2,10 +2,11 @@ export default class Ship {
 	constructor(length, x, y, rotation) {
 		this.length = length || this._getRandomLength(5);
 		this.hits = 0;
+		this.x = typeof x === "number" ? x : null;
+		this.y = typeof y === "number" ? y : null;
+		this.rotation = typeof rotation === "number" ? rotation : null;
 		this._coordList =
-			typeof x === "number" &&
-			typeof y === "number" &&
-			typeof rotation === "number"
+			this.x !== null && this.x !== null && this.x !== null
 				? this.getShipCoords(
 						this.length,
 						[
@@ -58,7 +59,7 @@ export default class Ship {
 				"Wrong type or format (" + num + "), expected a positive int"
 			);
 		}
-        return num
+		return num;
 	}
 
 	_testPositiveInt(input) {
