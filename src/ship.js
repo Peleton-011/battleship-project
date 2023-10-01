@@ -8,15 +8,21 @@ export default class Ship {
 			typeof rotation === "number"
 				? this.getShipCoords(
 						this.length,
-						[this._testPositiveInt(x), this._testPositiveInt(y)],
-						this._testPositiveInt(rotation)
+						[
+							this._testPositiveIntOrZero(x),
+							this._testPositiveIntOrZero(y),
+						],
+						this._testPositiveIntOrZero(rotation)
 				  )
 				: null;
 	}
 
-	getShipCoords(len, [x, y], rotation) {
-		// if (this._coordList) return this._coordList;
+	getShipCoords(arglen, [argx, argy], argrotation) {
+		if (this._coordList) return this._coordList;
+		const [x, y] = [argx, argy] || [this.x, this.y];
+		const rotation = argrotation || this.rotation;
 		const coordList = [];
+		const len = arglen || this.length;
 
 		const isRotEven = rotation % 2 === 0;
 
@@ -45,13 +51,19 @@ export default class Ship {
 		return this._length;
 	}
 
-	_testPositiveInt(input) {
+	_testPositiveIntOrZero(input) {
 		const num = parseInt(input);
 		if (num !== Number(num)) {
 			throw new Error(
 				"Wrong type or format (" + num + "), expected a positive int"
 			);
 		}
+        return num
+	}
+
+	_testPositiveInt(input) {
+		const num = parseInt(input);
+		this._testPositiveIntOrZero(num);
 		if (num < 1) {
 			throw new Error(
 				"Wrong type or format (" + num + "), expected a positive int"
