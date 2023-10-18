@@ -23,6 +23,12 @@ export default class Ship {
 		const [x, y] = [argx, argy] || [this.x, this.y];
 		const rotation = argrotation || this.rotation;
 		const len = arglen || this.length;
+		const coordList = Ship.getShipCoords(len, [x, y], rotation);
+		this._coordList = coordList;
+		return coordList;
+	}
+
+	static getShipCoords(len, [x, y], rotation) {
 		const coordList = [];
 
 		const isRotEven = rotation % 2 === 0;
@@ -33,7 +39,6 @@ export default class Ship {
 			const newY = !isRotEven ? y : rotation < 2 ? y - i : y + i;
 			coordList.push([newX, newY]);
 		}
-		this._coordList = coordList;
 		return coordList;
 	}
 
