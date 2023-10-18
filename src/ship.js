@@ -22,8 +22,8 @@ export default class Ship {
 		if (this._coordList) return this._coordList;
 		const [x, y] = [argx, argy] || [this.x, this.y];
 		const rotation = argrotation || this.rotation;
-		const coordList = [];
 		const len = arglen || this.length;
+		const coordList = [];
 
 		const isRotEven = rotation % 2 === 0;
 
