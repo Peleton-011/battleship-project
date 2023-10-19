@@ -28,12 +28,12 @@ test("Place Boat 1", () => {
 });
 
 test("Place Boat 3", () => {
-    testBoard.placeShip(3, [1,1], 1)
-	expect(testBoard.board[1][1]).toBe(3);
-	expect(testBoard.board[2][1]).toBe(3);
-	expect(testBoard.board[3][1]).toBe(3);
-	expect(testBoard.board[4][1]).toBe(3);
-    expect(testBoard.board[5][1]).toBe(null);
-    
+    testBoard.placeShip(3, [2,2], 1)
+	expect(testBoard.board[2][2]).toBe(3);
+	expect(testBoard.board[3][2]).toBe(3);
+	expect(testBoard.board[4][2]).toBe(3);
+	expect(testBoard.board[5][2]).toBe(3);
+    expect(testBoard.board[6][2]).toBe(null);
 });
+
 
