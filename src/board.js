@@ -38,7 +38,7 @@ export default class GameBoard {
 			const currentCoords = coords[i];
 			this.board[currentCoords[0]][currentCoords[1]] = index;
 		}
-        throw new Error(this.board)
+        // throw new Error(this.board)
 	}
 
 	_makeBoard(size) {

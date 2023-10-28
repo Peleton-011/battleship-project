@@ -1,8 +1,9 @@
 import React from "react";
 import Column from "./Column";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Board = ({ contents: argcontents }) => {
+const Board = ({ board }) => {
+
 	const len = 10;
 
 	const emptyContent = [];
@@ -14,11 +15,16 @@ const Board = ({ contents: argcontents }) => {
 		emptyContent.push(col);
 	}
 
+    
 	const [contents, setContents] = useState(emptyContent);
+    useEffect(() => {
+        setContents(board.board)
+    }, [...board.board])
 
-	const onclick = (e, x, y) => {
+	const sendAttack = (e, x, y) => {
 		console.log("Clickity Click! (" + x + ", " + y + ")");
 	};
+	const placeShip = (e, x, y) => {};
 
 	return (
 		<div className="board-wrapper">
@@ -32,9 +38,9 @@ const Board = ({ contents: argcontents }) => {
 								col={i}
 								len={len}
 								contents={
-									i === 0 ? contents : argcontents[i - 1]
+									i === 0 ? contents : board.board[i - 1]
 								}
-								onclick={onclick}
+								onclick={sendAttack}
 							/>
 						);
 					}

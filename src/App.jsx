@@ -9,9 +9,11 @@ function App() {
     const board1 = new GameBoard()
     const board2 = new GameBoard()
 
+    board1.placeShip(2, [3, 3], 1)
+
 	return (
     <main>
-        <Board contents={board1.board}/>
+        <Board board={board1}/>
     </main>
     );
 }
