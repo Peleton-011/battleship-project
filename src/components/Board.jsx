@@ -1,13 +1,9 @@
 import React from "react";
 import Column from "./Column";
-import PotionBoard from "./PotionBoard";
 import { useState } from "react";
 
-const Board = ({ alchemicals }) => {
-	console.log(alchemicals);
-	const len = alchemicals.names.length;
-	const names = alchemicals.names;
-	const numAlchemicals = alchemicals.nums;
+const Board = ({ contents: argcontents }) => {
+    const len = 10;
 
 	const emptyContent = [];
 	for (let i = 0; i < len; i++) {
@@ -19,32 +15,6 @@ const Board = ({ alchemicals }) => {
 	}
 
 	const [contents, setContents] = useState(emptyContent);
-
-	const checkCombinations = (x, y, type, sign) => {
-		const col1 = contents[x - 1];
-		const col2 = contents[y - 1];
-
-		//Filter by sign
-		if (type === "red" || type === "green" || type === "blue") {
-			numAlchemicals.forEach((alchemical, i) => {
-				if (alchemical[type].sign === sign) return;
-				col1[i] = "X";
-				col2[i] = "X";
-			});
-		}
-
-		setContents([
-			...contents.map((col, i) => {
-				if (i === x - 1 || i === y - 1)
-					return col.map((cell, j) => {
-						if (i === x - 1) return cell || col1[j];
-						return cell || col2[j];
-					});
-				return col;
-			}),
-		]);
-		console.log(contents);
-	};
 
 	const potionOnBlur = (e, x, y) => {
 		const content = e.target.textContent;
@@ -91,13 +61,12 @@ const Board = ({ alchemicals }) => {
 								key={i}
 								col={i}
 								len={len}
-								name={names[i - 1]}
 								contents={
 									i === 0
-										? numAlchemicals
+										? contents
 										: i === len + 1
 										? emptyContent[0]
-										: contents[i - 1]
+										: argcontents[i - 1]
 								}
 							/>
 						);
@@ -106,7 +75,7 @@ const Board = ({ alchemicals }) => {
 				})()}
 			</div>
 
-			<PotionBoard len={len} onblur={potionOnBlur} />
+			{/* <PotionBoard len={len} onblur={potionOnBlur} /> */}
 		</div>
 	);
 };
