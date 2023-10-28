@@ -23,14 +23,6 @@
 	border: 1px grey solid;
 }
 
-.matrix {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
-	font-size: 0.8rem;
-	line-height: 1rem;
-}
-
 .cell .matrix > div {
 	width: auto;
 	height: 100%;
