@@ -12,7 +12,7 @@ export default class GameBoard {
 	placeShip(index, [x, y], rotation) {
 		//Check if the ship has been placed
 		if (typeof this.ships[index] !== "number")
-			return new Error("Ship " + index + " already placed");
+			throw new Error("Ship " + index + " already placed");
 
 		const len = this._testPositiveInt(this.ships[index]);
 		const coords = Ship.getShipCoords(len, [x, y], rotation);
@@ -23,7 +23,7 @@ export default class GameBoard {
 		for (let i = 0; i < coords.length; i++) {
 			const currentCoords = coords[i];
 			if (this.board[currentCoords[0]][currentCoords[1]] !== null)
-				return new Error(
+				throw new Error(
 					"Tile " +
 						currentCoords[0] +
 						", " +
@@ -34,10 +34,11 @@ export default class GameBoard {
 				);
 		}
 
-		for (let i = 0; i < coords.length; i++) {
+		for (let i = 0; i < this.ships[index]; i++) {
 			const currentCoords = coords[i];
 			this.board[currentCoords[0]][currentCoords[1]] = index;
 		}
+        throw new Error(this.board)
 	}
 
 	_makeBoard(size) {
