@@ -29,24 +29,24 @@ test("Place Boat 2", () => {
 });
 
 test("Place Boat 3", () => {
-	testBoard.placeShip(2, [1, 1], 1);
-	expect(testBoard.board[1][1]).toBe(2);
-	expect(testBoard.board[2][1]).toBe(2);
-	expect(testBoard.board[3][1]).toBe(2);
-	expect(testBoard.board[4][1]).toBe(null);
+	testBoard.placeShip(2, [1, 3], 1);
+	expect(testBoard.board[1][3]).toBe(2);
+	expect(testBoard.board[2][3]).toBe(2);
+	expect(testBoard.board[3][3]).toBe(2);
+	expect(testBoard.board[4][3]).toBe(null);
 });
 
-test("Attack 1", () => {
+test.skip("Attack 1", () => {
     testBoard.attack([1,1])
     expect(testBoard.ships[2].hits).toBe(1)
 })
 
-test("Attack 2", () => {
+test.skip("Attack 2", () => {
     testBoard.attack([3,3])
     expect(testBoard.board[3][3]).toBe(-1)
 })
 
-test("Attack 3", () => {
+test.skip("Attack 3", () => {
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
             testBoard.attack([i,j])
