@@ -54,13 +54,6 @@
 	height: 4rem;
 }
 
-.column:last-child {
-	border: none;
-}
-.column:last-child > .cell {
-	border: none;
-}
-
 .logo {
 	height: 6em;
 	padding: 1.5em;

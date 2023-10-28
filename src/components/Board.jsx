@@ -3,7 +3,7 @@ import Column from "./Column";
 import { useState } from "react";
 
 const Board = ({ contents: argcontents }) => {
-    const len = 10;
+	const len = 10;
 
 	const emptyContent = [];
 	for (let i = 0; i < len; i++) {
@@ -55,18 +55,14 @@ const Board = ({ contents: argcontents }) => {
 			<div className="board">
 				{(() => {
 					const cols = [];
-					for (let i = 0; i < len + 2; i++) {
+					for (let i = 0; i < len + 1; i++) {
 						cols.push(
 							<Column
 								key={i}
 								col={i}
 								len={len}
 								contents={
-									i === 0
-										? contents
-										: i === len + 1
-										? emptyContent[0]
-										: argcontents[i - 1]
+									i === 0 ? contents : argcontents[i - 1]
 								}
 							/>
 						);
