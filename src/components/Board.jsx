@@ -16,38 +16,8 @@ const Board = ({ contents: argcontents }) => {
 
 	const [contents, setContents] = useState(emptyContent);
 
-	const potionOnBlur = (e, x, y) => {
-		const content = e.target.textContent;
-		const type =
-			content === ""
-				? null
-				: content.includes("r") || content.includes("R")
-				? "red"
-				: content.includes("g") || content.includes("G")
-				? "green"
-				: content.includes("n") || content.includes("N")
-				? "neutral"
-				: "blue";
-
-		const sign = !["red", "green", "blue"].includes(type)
-			? null
-			: content.includes("-")
-			? -1
-			: 1;
-
-		checkCombinations(x, y, type, sign);
-
-		console.log(
-			e.target.textContent,
-			" ",
-			x,
-			", ",
-			y,
-			" ",
-			type,
-			" ",
-			sign
-		);
+	const onclick = (e, x, y) => {
+		console.log("Clickity Click! (" + x + ", " + y + ")");
 	};
 
 	return (
@@ -64,6 +34,7 @@ const Board = ({ contents: argcontents }) => {
 								contents={
 									i === 0 ? contents : argcontents[i - 1]
 								}
+								onclick={onclick}
 							/>
 						);
 					}
