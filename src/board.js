@@ -2,7 +2,6 @@ import Ship from "./ship";
 export default class GameBoard {
 	constructor(size, boatList) {
 		this.board = this._makeBoard(size || 10);
-		console.log(this.board);
 		this.ships = boatList || [2, 3, 3, 4, 5];
 	}
 
@@ -39,12 +38,10 @@ export default class GameBoard {
 						this.board[x][y] +
 						")"
 				);
-			console.log("placing " + x + ", " + y);
+			// console.log("placing " + x + ", " + y);
 			this.board[x][y] = index; //`${index} : ${x}, ${y}`;
 		});
         this.ships[index] = new Ship(len, x, y, rotation);
-		console.log(this.board);
-		// throw new Error(this.board)
 	}
 
 	isAllSunk() {
@@ -54,10 +51,7 @@ export default class GameBoard {
 	}
 
 	attack([x, y]) {
-        console.log(this.board[x][y])
-        console.log(this.ships)
 		if (!this.board[x][y] || this.board[x][y] < 0) {
-            console.log("enti")
 			this.board[x][y] = -1;
 			return;
 		}
