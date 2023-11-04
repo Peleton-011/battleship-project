@@ -56,6 +56,7 @@ export default class GameBoard {
 			return;
 		}
 		this.ships[this.board[x][y]].hit();
+			this.board[x][y] = -2;
 	}
 
 	_makeBoard(size) {
