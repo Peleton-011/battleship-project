@@ -40,10 +40,28 @@ export default class GameBoard {
 						")"
 				);
 			console.log("placing " + x + ", " + y);
-			this.board[x][y] = index//`${index} : ${x}, ${y}`;
+			this.board[x][y] = index; //`${index} : ${x}, ${y}`;
 		});
+        this.ships[index] = new Ship(len, x, y, rotation);
 		console.log(this.board);
 		// throw new Error(this.board)
+	}
+
+	isAllSunk() {
+		return this.ships
+			.filter((ship) => typeof ship != "number")
+			.every((ship) => ship.isSunk());
+	}
+
+	attack([x, y]) {
+        console.log(this.board[x][y])
+        console.log(this.ships)
+		if (!this.board[x][y] || this.board[x][y] < 0) {
+            console.log("enti")
+			this.board[x][y] = -1;
+			return;
+		}
+		this.ships[this.board[x][y]].hit();
 	}
 
 	_makeBoard(size) {
