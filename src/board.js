@@ -40,7 +40,7 @@ export default class GameBoard {
 						")"
 				);
 			console.log("placing " + x + ", " + y);
-			this.board[x][y] = `${index} : ${x}, ${y}`;
+			this.board[x][y] = index//`${index} : ${x}, ${y}`;
 		});
 		console.log(this.board);
 		// throw new Error(this.board)
