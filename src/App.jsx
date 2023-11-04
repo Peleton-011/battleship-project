@@ -9,7 +9,7 @@ function App() {
     const board1 = new GameBoard()
     const board2 = new GameBoard()
 
-    board1.placeShip(2, [3, 3], 1)
+    board1.placeShip(2, [1, 5], 0)
 
 	return (
     <main>
