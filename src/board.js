@@ -2,6 +2,7 @@ import Ship from "./ship";
 export default class GameBoard {
 	constructor(size, boatList) {
 		this.board = this._makeBoard(size || 10);
+		console.log(this.board);
 		this.ships = boatList || [2, 3, 3, 4, 5];
 	}
 
@@ -9,6 +10,15 @@ export default class GameBoard {
 		return this.ships.every((ship) => !!ship.length);
 	}
 
+	/**
+	 * Places a ship on the game board.
+	 *
+	 * @param {number} index - The index of the ship to be placed.
+	 * @param {array} [x, y] - The coordinates where the ship will be placed.
+	 * @param {number} rotation - The rotation of the ship.
+	 * @throws {Error} If the ship has already been placed.
+	 * @throws {Error} If the coordinates are already occupied.
+	 */
 	placeShip(index, [x, y], rotation) {
 		//Check if the ship has been placed
 		if (typeof this.ships[index] !== "number")
@@ -17,33 +27,31 @@ export default class GameBoard {
 		const len = this._testPositiveInt(this.ships[index]);
 		const coords = Ship.getShipCoords(len, [x, y], rotation);
 
-		//TO-DO: Refactor these loops vvvv (?)
-
-		//Check if the coords are available
-		for (let i = 0; i < coords.length; i++) {
-			const currentCoords = coords[i];
-			if (this.board[currentCoords[0]][currentCoords[1]] !== null)
+		coords.forEach(([x, y]) => {
+			//Check if the coords are available
+			if (this.board[x][y] !== null)
 				throw new Error(
 					"Tile " +
-						currentCoords[0] +
+						x +
 						", " +
-						currentCoords[1] +
+						y +
 						" already occupied (" +
-						this.board[currentCoords[0]][currentCoords[1]] +
+						this.board[x][y] +
 						")"
 				);
-		}
-
-		for (let i = 0; i < this.ships[index]; i++) {
-			const currentCoords = coords[i];
-			this.board[currentCoords[0]][currentCoords[1]] = index;
-		}
-        // throw new Error(this.board)
+			console.log("placing " + x + ", " + y);
+			this.board[x][y] = `${index} : ${x}, ${y}`;
+		});
+		console.log(this.board);
+		// throw new Error(this.board)
 	}
 
 	_makeBoard(size) {
 		size = this._testPositiveInt(size);
-		return new Array(size).fill(new Array(size).fill(null));
+
+		const arr = [...Array(size)].map((e) => Array(size).fill(null));
+		//arr.forEach((col, y) => arr[y] = col.map((val, x) => col[x] = "" + x + ", " + y))
+		return arr;
 	}
 
 	_testPositiveInt(input) {
