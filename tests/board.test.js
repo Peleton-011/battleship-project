@@ -36,17 +36,17 @@ test("Place Boat 3", () => {
 	expect(testBoard.board[4][3]).toBe(null);
 });
 
-test.skip("Attack 1", () => {
+test("Attack 1", () => {
     testBoard.attack([1,1])
     expect(testBoard.ships[2].hits).toBe(1)
 })
 
-test.skip("Attack 2", () => {
+test("Attack 2", () => {
     testBoard.attack([3,3])
     expect(testBoard.board[3][3]).toBe(-1)
 })
 
-test.skip("Attack 3", () => {
+test("Attack 3", () => {
     for (let i = 0; i < 10; i++) {
         for (let j = 0; j < 10; j++) {
             testBoard.attack([i,j])
