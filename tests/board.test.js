@@ -37,13 +37,13 @@ test("Place Boat 3", () => {
 });
 
 test("Attack 1", () => {
-    testBoard.attack([1,1])
+    testBoard.attack([1,3])
     expect(testBoard.ships[2].hits).toBe(1)
 })
 
 test("Attack 2", () => {
-    testBoard.attack([3,3])
-    expect(testBoard.board[3][3]).toBe(-1)
+    testBoard.attack([4,3])
+    expect(testBoard.board[4][3]).toBe(-1)
 })
 
 test("Attack 3", () => {
