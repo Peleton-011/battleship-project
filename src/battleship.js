@@ -28,7 +28,7 @@ export default class GameLoop {
 			});
 
 			await timer(1000);
-			console.log("cume");
+			console.log("cycle");
 		}
 		this.board1.ships.forEach((ship) => {
 			this.board1.placeShip();
