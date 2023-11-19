@@ -3,7 +3,6 @@ import Column from "./Column";
 import { useState, useEffect } from "react";
 
 const Board = ({ board }) => {
-
 	const len = 10;
 
 	const emptyContent = [];
@@ -15,11 +14,16 @@ const Board = ({ board }) => {
 		emptyContent.push(col);
 	}
 
-    
 	const [contents, setContents] = useState(emptyContent);
-    useEffect(() => {
-        setContents(board.board)
-    }, [...board.board])
+	const [onClick, setOnClick] = useState(() => {});
+    //Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
+	useEffect(() => {
+        if ()
+    }, [board.ships]);
+
+	useEffect(() => {
+		setContents(board.board);
+	}, [...board.board]);
 
 	const sendAttack = (e, x, y) => {
 		console.log("Clickity Click! (" + x + ", " + y + ")");
