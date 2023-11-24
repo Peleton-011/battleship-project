@@ -3,7 +3,14 @@ import Column from "./Column";
 import { useState, useEffect } from "react";
 
 const Board = ({ size: argSize, ships: argShips }) => {
-	const [size, ships] = [argSize || 10, argShips || [2, 3, 3, 4, 5]];
+    
+    const [size, setSize] = useState(argSize || 10);
+    const [ships, setShips] = useState(argShips || [2, 3, 3, 4, 5]);
+    
+    useEffect(() => {
+        setSize(argSize || 10);
+        setShips(argShips || [2, 3, 3, 4, 5]);
+    }, [])
 	const [board, setBoard] = useState(_makeBoard(size));
 	const [onClick, setOnClick] = useState(() => {});
 	//Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
@@ -11,8 +18,14 @@ const Board = ({ size: argSize, ships: argShips }) => {
 
 	const sendPlaceShip = (e, x, y) => {
 		console.log("Clickity Click! (" + x + ", " + y + ")");
-		let i = 0;
-
+		let i = ships.indexOf(
+			ships.filter(
+				(ship) =>
+					!board.some((col) => col.includes(ships.indexOf(ship)))
+			)[0]
+		);
+		console.log(i);
+		console.log(ships);
 		const rect = e.target.getBoundingClientRect();
 		const mousePos = {
 			x: e.clientX - rect.left,
@@ -45,9 +58,7 @@ const Board = ({ size: argSize, ships: argShips }) => {
 			rot = 2;
 		}
 
-		console.log(rot);
-
-		console.log("Mouse position: " + mousePos.relX + "," + mousePos.relY);
+		// console.log("Mouse position: " + mousePos.relX + "," + mousePos.relY);
 
 		placeShip(i, [x - 1, y - 1], rot);
 	};
@@ -76,7 +87,9 @@ const Board = ({ size: argSize, ships: argShips }) => {
 			tempBoard[x][y] = index;
 			setBoard(tempBoard); //`${index} : ${x}, ${y}`;
 		});
+        console.log("about to new ship this bith")
 		ships[index] = new Ship(len, x, y, rotation);
+        console.log(ships)
 	}
 	function attack([x, y]) {
 		if (!board[x][y] || board[x][y] < 0) {
