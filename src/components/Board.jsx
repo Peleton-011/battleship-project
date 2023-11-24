@@ -56,10 +56,6 @@ const Board = ({ size: argSize, ships: argShips }) => {
 	};
 
 	function placeShip(index, [x, y], rotation) {
-		//Check if the ship has been placed
-		if (typeof ships[index] !== "number")
-			throw new Error("Ship " + index + " already placed");
-
 		const len = _testPositiveInt(ships[index]);
 		const coords = Ship.getShipCoords(len, [x, y], rotation);
 
@@ -76,7 +72,7 @@ const Board = ({ size: argSize, ships: argShips }) => {
 						")"
 				);
 			// console.log("placing " + x + ", " + y);
-			const tempBoard = board;
+			const tempBoard = [...board];
 			tempBoard[x][y] = index;
 			setBoard(tempBoard); //`${index} : ${x}, ${y}`;
 		});
@@ -127,21 +123,21 @@ const Board = ({ size: argSize, ships: argShips }) => {
 	return (
 		<div className="board-wrapper">
 			<div className="board">
-				{(() => {
-					const cols = [];
-					for (let i = 0; i < size + 1; i++) {
-						cols.push(
-							<Column
-								key={i}
-								col={i}
-								len={size}
-								contents={i === 0 ? board : board[i - 1]}
-								onclick={sendPlaceShip}
-							/>
-						);
-					}
-					return cols;
-				})()}
+				<Column
+					col={0}
+					len={size}
+					contents={board}
+					onclick={sendPlaceShip}
+				/>
+				{board.map((col, i) => (
+					<Column
+						key={i + 1}
+						col={i + 1}
+						len={size}
+						contents={board[i]}
+						onclick={sendPlaceShip}
+					/>
+				))}
 			</div>
 
 			{/* <PotionBoard len={len} onblur={potionOnBlur} /> */}
