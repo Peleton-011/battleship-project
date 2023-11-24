@@ -13,7 +13,42 @@ const Board = ({ size: argSize, ships: argShips }) => {
 		console.log("Clickity Click! (" + x + ", " + y + ")");
 		let i = 0;
 
+		const rect = e.target.getBoundingClientRect();
+		const mousePos = {
+			x: e.clientX - rect.left,
+			y: e.clientY - rect.top,
+			relX: (e.clientX - rect.left) / rect.width,
+			relY: (e.clientY - rect.top) / rect.height,
+		};
+
 		let rot = 0;
+		//Select side based on mouse position (Up, down, left, right)
+		if (
+			mousePos.relX > mousePos.relY &&
+			mousePos.relX < 1 - mousePos.relY
+		) {
+			rot = 0;
+		} else if (
+			mousePos.relX < mousePos.relY &&
+			mousePos.relX < 1 - mousePos.relY
+		) {
+			rot = 3;
+		} else if (
+			mousePos.relX > mousePos.relY &&
+			mousePos.relX > 1 - mousePos.relY
+		) {
+			rot = 1;
+		} else if (
+			mousePos.relX < mousePos.relY &&
+			mousePos.relX > 1 - mousePos.relY
+		) {
+			rot = 2;
+		}
+
+		console.log(rot);
+
+		console.log("Mouse position: " + mousePos.relX + "," + mousePos.relY);
+
 		placeShip(i, [x - 1, y - 1], rot);
 	};
 	const sendAttack = (e, x, y) => {
@@ -41,23 +76,23 @@ const Board = ({ size: argSize, ships: argShips }) => {
 						")"
 				);
 			// console.log("placing " + x + ", " + y);
-            const tempBoard = board
-            tempBoard[x][y] = index
+			const tempBoard = board;
+			tempBoard[x][y] = index;
 			setBoard(tempBoard); //`${index} : ${x}, ${y}`;
 		});
 		ships[index] = new Ship(len, x, y, rotation);
 	}
 	function attack([x, y]) {
 		if (!board[x][y] || board[x][y] < 0) {
-			const tempBoard = board
-            tempBoard[x][y] = -1;
-            setBoard(tempBoard)
+			const tempBoard = board;
+			tempBoard[x][y] = -1;
+			setBoard(tempBoard);
 			return;
 		}
 		ships[board[x][y]].hit();
-        const tempBoard = board;
+		const tempBoard = board;
 		tempBoard[x][y] = -2;
-        setBoard(tempBoard)
+		setBoard(tempBoard);
 	}
 
 	function isAllSunk() {
@@ -101,7 +136,7 @@ const Board = ({ size: argSize, ships: argShips }) => {
 								col={i}
 								len={size}
 								contents={i === 0 ? board : board[i - 1]}
-								onclick={sendAttack}
+								onclick={sendPlaceShip}
 							/>
 						);
 					}
