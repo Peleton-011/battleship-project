@@ -1,8 +1,10 @@
 import React from "react";
 import Column from "./Column";
 import { useState, useEffect } from "react";
+import GameBoard from "../board";
 
-const Board = ({ board }) => {
+const Board = (S) => {
+	const board = new GameBoard();
 	const len = 10;
 
 	const emptyContent = [];
@@ -16,10 +18,8 @@ const Board = ({ board }) => {
 
 	const [contents, setContents] = useState(emptyContent);
 	const [onClick, setOnClick] = useState(() => {});
-    //Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
-	useEffect(() => {
-        if ()
-    }, [board.ships]);
+	//Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
+	useEffect(() => {}, [board.ships]);
 
 	useEffect(() => {
 		setContents(board.board);
