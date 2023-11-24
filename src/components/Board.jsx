@@ -4,30 +4,22 @@ import { useState, useEffect } from "react";
 
 const Board = ({ size: argSize, ships: argShips }) => {
 	const [size, ships] = [argSize || 10, argShips || [2, 3, 3, 4, 5]];
-	const board = _makeBoard(size)
-	const len = 10;
-
-	const emptyContent = [];
-	for (let i = 0; i < len; i++) {
-		const col = [];
-		for (let j = 0; j < len; j++) {
-			col.push([]);
-		}
-		emptyContent.push(col);
-	}
-
-	const [contents, setContents] = useState(emptyContent);
+	const [board, setBoard] = useState(_makeBoard(size));
 	const [onClick, setOnClick] = useState(() => {});
 	//Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
 	// useEffect(() => {}, [ships]);
 
-	useEffect(() => {
-		setContents(board);
-	}, [...board]);
+	const sendPlaceShip = (e, x, y) => {
+		console.log("Clickity Click! (" + x + ", " + y + ")");
+		let i = 0;
 
+		let rot = 0;
+		placeShip(i, [x - 1, y - 1], rot);
+	};
 	const sendAttack = (e, x, y) => {
 		console.log("Clickity Click! (" + x + ", " + y + ")");
 	};
+
 	function placeShip(index, [x, y], rotation) {
 		//Check if the ship has been placed
 		if (typeof ships[index] !== "number")
@@ -49,24 +41,29 @@ const Board = ({ size: argSize, ships: argShips }) => {
 						")"
 				);
 			// console.log("placing " + x + ", " + y);
-			board[x][y] = index; //`${index} : ${x}, ${y}`;
+            const tempBoard = board
+            tempBoard[x][y] = index
+			setBoard(tempBoard); //`${index} : ${x}, ${y}`;
 		});
 		ships[index] = new Ship(len, x, y, rotation);
 	}
-
-    	function isAllSunk() {
-		return ships
-			.filter((ship) => typeof ship != "number")
-			.every((ship) => ship.isSunk());
-	}
-
 	function attack([x, y]) {
 		if (!board[x][y] || board[x][y] < 0) {
-			board[x][y] = -1;
+			const tempBoard = board
+            tempBoard[x][y] = -1;
+            setBoard(tempBoard)
 			return;
 		}
 		ships[board[x][y]].hit();
-		board[x][y] = -2;
+        const tempBoard = board;
+		tempBoard[x][y] = -2;
+        setBoard(tempBoard)
+	}
+
+	function isAllSunk() {
+		return ships
+			.filter((ship) => typeof ship != "number")
+			.every((ship) => ship.isSunk());
 	}
 
 	function _makeBoard(size) {
@@ -97,15 +94,13 @@ const Board = ({ size: argSize, ships: argShips }) => {
 			<div className="board">
 				{(() => {
 					const cols = [];
-					for (let i = 0; i < len + 1; i++) {
+					for (let i = 0; i < size + 1; i++) {
 						cols.push(
 							<Column
 								key={i}
 								col={i}
-								len={len}
-								contents={
-									i === 0 ? contents : board[i - 1]
-								}
+								len={size}
+								contents={i === 0 ? board : board[i - 1]}
 								onclick={sendAttack}
 							/>
 						);
@@ -118,8 +113,6 @@ const Board = ({ size: argSize, ships: argShips }) => {
 		</div>
 	);
 };
-
-
 
 class Ship {
 	constructor(length, x, y, rotation) {
