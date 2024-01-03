@@ -2,7 +2,7 @@ import React from "react";
 import Column from "./Column";
 import { useState, useEffect, useRef } from "react";
 
-const Board = ({ size: argSize, ships: argShips, active, endTurn }) => {
+const Board = ({ size: argSize, ships: argShips, active, endTurn, player }) => {
 	const size = argSize || 10;
 	const [ships, setShips] = useState(
 		(argShips || [2, 3, 3, 4, 5]).map((ship) => new Ship(ship))
@@ -66,11 +66,14 @@ const Board = ({ size: argSize, ships: argShips, active, endTurn }) => {
 		// console.log("Mouse position: " + mousePos.relX + "," + mousePos.relY);
 
 		placeShip(i, [x - 1, y - 1], rot);
-		endTurn();
+		if (i === ships.length - 1) {
+			console.log("ending turn")
+            endTurn();
+		}
 	};
 	const sendAttack = (e, x, y) => {
 		attack([x - 1, y - 1]);
-        endTurn();
+		endTurn();
 	};
 
 	function placeShip(index, [x, y], rotation) {
@@ -101,21 +104,6 @@ const Board = ({ size: argSize, ships: argShips, active, endTurn }) => {
 				return ship;
 			})
 		);
-
-		if (ships.every((ship) => ship.isPlaced())) {
-			console.log("Cchanging");
-		} else {
-			console.log(
-				ships.map((ship) => [
-					ship.isPlaced(),
-					ship.x,
-					ship.y,
-					ship.length,
-				])
-			);
-			console.log("Not chengen");
-		}
-		console.log("isek");
 	}
 	function attack([x, y]) {
 		console.log("attacking " + x + ", " + y + ": " + board[x][y]);
@@ -173,6 +161,9 @@ const Board = ({ size: argSize, ships: argShips, active, endTurn }) => {
 
 	return (
 		<div className={"board-wrapper" + (active ? " active" : "")}>
+			<h2>
+				{player}, {getNextIndex() >= 0 ? "place your ships" : "attack"}
+			</h2>
 			<div className="board">
 				<Column col={0} len={size} contents={board} onclick={onClick} />
 				{board.map((col, i) => (
