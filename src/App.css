@@ -48,44 +48,18 @@
 	height: 100%;
 }
 
-.potion-board {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
+.board-wrapper, .next-turn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in;
 }
-
-.potion-row {
-	display: flex;
-}
-
-.potion-row > div {
-	border-radius: 50%;
-	border: 1px grey solid;
-	width: 4rem;
-	height: 4rem;
-}
-
-.logo {
-	height: 6em;
-	padding: 1.5em;
-	will-change: filter;
-	transition: filter 300ms;
-}
-.logo:hover {
-	filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-	filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+.board-wrapper.active, .next-turn.active {
+    opacity: 1;
+    pointer-events: all;
 }
 
 @media (prefers-reduced-motion: no-preference) {

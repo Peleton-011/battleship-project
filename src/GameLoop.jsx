@@ -20,10 +20,11 @@ const GameLoop = ({ isSinglePlayer }) => {
 
 	return (
 		<div>
-			<Board active={currentBoard} endTurn={endTurn} />
-			<Board active={!currentBoard} endTurn={endTurn} />
-			{!isSinglePlayer && turnEnded && (
+			<Board active={currentBoard && !turnEnded} endTurn={endTurn} />
+			<Board active={!currentBoard && !turnEnded} endTurn={endTurn} />
+			{!isSinglePlayer && (
 				<NextTurn
+					active={turnEnded}
 					player={currentBoard ? "Player 1" : "Player 2"}
 					nextTurn={() => changeTurn()}
 				/>
