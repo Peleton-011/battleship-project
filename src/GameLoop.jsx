@@ -1,17 +1,33 @@
-// import GameBoard  "./board";
+// import GameBoard  "./board";false
 import Board from "./components/Board";
+import NextTurn from "./components/NextTurn";
+import { useState } from "react";
 
-const GameLoop = () => {
+const GameLoop = ({ isSinglePlayer }) => {
+	const [currentBoard, setCurrentBoard] = useState(false);
+	const [turnEnded, setTurnEnded] = useState(false);
 
-	// function start() {
-	// 	const timer = (ms) => new Promise((res) => setTimeout(res, ms));
-	// 	this.board1.ships.forEach((ship) => {
-	// 		this.board1.placeShip();
-	// 	});
-	// }
+	const changeTurn = () => {
+		setTurnEnded(false);
+		setCurrentBoard(!currentBoard);
+		console.log("Chnage turn");
+	};
+
+	const endTurn = () => {
+		setTurnEnded(true);
+		console.log("end turn");
+	};
+
 	return (
 		<div>
-			<Board />
+			<Board active={currentBoard} endTurn={endTurn} />
+			<Board active={!currentBoard} endTurn={endTurn} />
+			{!isSinglePlayer && turnEnded && (
+				<NextTurn
+					player={currentBoard ? "Player 1" : "Player 2"}
+					nextTurn={() => changeTurn()}
+				/>
+			)}
 		</div>
 	);
 };

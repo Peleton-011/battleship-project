@@ -2,7 +2,7 @@ import React from "react";
 import Column from "./Column";
 import { useState, useEffect, useRef } from "react";
 
-const Board = ({ size: argSize, ships: argShips }) => {
+const Board = ({ size: argSize, ships: argShips, active, endTurn }) => {
 	const size = argSize || 10;
 	const [ships, setShips] = useState(
 		(argShips || [2, 3, 3, 4, 5]).map((ship) => new Ship(ship))
@@ -66,9 +66,11 @@ const Board = ({ size: argSize, ships: argShips }) => {
 		// console.log("Mouse position: " + mousePos.relX + "," + mousePos.relY);
 
 		placeShip(i, [x - 1, y - 1], rot);
+		endTurn();
 	};
 	const sendAttack = (e, x, y) => {
 		attack([x - 1, y - 1]);
+        endTurn();
 	};
 
 	function placeShip(index, [x, y], rotation) {
@@ -170,7 +172,7 @@ const Board = ({ size: argSize, ships: argShips }) => {
 	}
 
 	return (
-		<div className="board-wrapper">
+		<div className={"board-wrapper" + (active ? " active" : "")}>
 			<div className="board">
 				<Column col={0} len={size} contents={board} onclick={onClick} />
 				{board.map((col, i) => (
