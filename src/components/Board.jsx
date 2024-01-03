@@ -4,16 +4,11 @@ import { useState, useEffect, useRef } from "react";
 
 const Board = ({ size: argSize, ships: argShips }) => {
 	const size = argSize || 10;
-	const [ships, setShips] = useState(argShips || [2, 3, 3, 4, 5]);
+	const [ships, setShips] = useState(
+		(argShips || [2, 3, 3, 4, 5]).map((ship) => new Ship(ship))
+	);
 
 	const [board, setBoard] = useState(_makeBoard(size));
-
-	function updateShips(newVal, index) {
-		const newShips = [...ships];
-		console.log(newShips);
-		newShips[index] = newVal;
-		setShips(newShips);
-	}
 
 	function updateBoard(newVal, [x, y]) {
 		const newBoard = [...board];
@@ -21,15 +16,20 @@ const Board = ({ size: argSize, ships: argShips }) => {
 		setBoard(newBoard);
 	}
 
-	const sendPlaceShip = (e, x, y) => {
-		console.log("Clickity Click! (" + x + ", " + y + ")");
-		let i = ships.indexOf(
+	const getNextIndex = () => {
+		const i = ships.indexOf(
 			ships.filter(
 				(ship) =>
-					!board.some((col) => col.includes(ships.indexOf(ship)))
+					!board.some((col) => col.includes(ships.indexOf(ship))) &&
+					!ship.isSunk()
 			)[0]
 		);
 		console.log(i);
+		return i;
+	};
+	const sendPlaceShip = (e, x, y, i) => {
+		console.log("Clickity Click! (" + x + ", " + y + ")");
+
 		console.log(ships);
 		const rect = e.target.getBoundingClientRect();
 		const mousePos = {
@@ -72,7 +72,7 @@ const Board = ({ size: argSize, ships: argShips }) => {
 	};
 
 	function placeShip(index, [x, y], rotation) {
-		const len = _testPositiveInt(ships[index]);
+		const len = _testPositiveInt(ships[index].length);
 		const coords = Ship.getShipCoords(len, [x, y], rotation);
 
 		coords.forEach(([x, y]) => {
@@ -91,27 +91,52 @@ const Board = ({ size: argSize, ships: argShips }) => {
 			updateBoard(index, [x, y]);
 		});
 		console.log("about to new ship this bith");
-		updateShips(new Ship(len, x, y, rotation), index);
-		if (ships.every((ship) => typeof ship !== "number")) {
+		setShips(
+			ships.map((ship, i) => {
+				if (i === index) {
+					return new Ship(len, x, y, rotation);
+				}
+				return ship;
+			})
+		);
+
+		if (ships.every((ship) => ship.isPlaced())) {
 			console.log("Cchanging");
-			setOnClick(() => sendAttack);
 		} else {
-			console.log(ships.map((ship) => typeof ship));
+			console.log(
+				ships.map((ship) => [
+					ship.isPlaced(),
+					ship.x,
+					ship.y,
+					ship.length,
+				])
+			);
 			console.log("Not chengen");
 		}
 		console.log("isek");
 	}
 	function attack([x, y]) {
-		console.log("attacking " + x + ", " + y);
-		if (!board[x][y] || board[x][y] < 0) {
+		console.log("attacking " + x + ", " + y + ": " + board[x][y]);
+		if (board[x][y] < 0) {
+			return;
+		}
+		if (typeof board[x][y] !== "number") {
 			updateBoard(-1, [x, y]);
 			return;
 		}
 		ships[board[x][y]].hit();
-		updateBoard(-(2)[(x, y)]);
+		updateBoard(-2, [x, y]);
+		if (isAllSunk()) {
+			console.log("you win");
+		}
 	}
 
-	const [onClick, setOnClick] = useState(() => sendPlaceShip);
+	const onClick = (e, x, y) => {
+		console.log("idekkkkkk");
+		const i = getNextIndex();
+		if (i === -1) return sendAttack(e, x, y);
+		return ((e, x, y) => sendPlaceShip(e, x, y, i))(e, x, y);
+	};
 
 	// Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
 
@@ -194,6 +219,10 @@ class Ship {
 		return coordList;
 	}
 
+	isPlaced() {
+		return this.x !== null && this.y !== null && this.rotation !== null;
+	}
+
 	static getShipCoords(len, [x, y], rotation) {
 		const coordList = [];
 
@@ -214,6 +243,10 @@ class Ship {
 
 	hit() {
 		this.hits += 1;
+		console.log("hit number " + this.hits);
+		if (this.isSunk()) {
+			console.log("sunk");
+		}
 	}
 
 	set length(len) {
