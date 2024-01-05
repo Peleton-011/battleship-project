@@ -10,7 +10,7 @@ const Player = ({
 	setEnemyBoard,
 	size,
 	ships,
-    setShips,
+	setShips,
 	active,
 	endTurn,
 	player,
@@ -85,6 +85,7 @@ const Player = ({
 		placeShip(i, [x - 1, y - 1], rot);
 		if (i === ships.length - 1) {
 			console.log("ending turn");
+			setShipsPlaced(true);
 			endTurn();
 		}
 	};
@@ -142,7 +143,6 @@ const Player = ({
 		if (shipsPlaced === false) {
 			const i = getNextIndex();
 			if (i === -1) {
-				setShipsPlaced(true);
 				return sendAttack(e, x, y);
 			}
 			return ((e, x, y) => sendPlaceShip(e, x, y, i))(e, x, y);
@@ -192,7 +192,5 @@ const Player = ({
 		</div>
 	);
 };
-
-
 
 export default Player;
