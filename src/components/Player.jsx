@@ -1,25 +1,36 @@
 import React from "react";
 import Board from "./Board";
-import { useState, useEffect, useRef } from "react";
+import Ship from "../Ship";
+import { useState, useEffect, useImperativeHandle } from "react";
 
 const Player = ({
-	size: argSize,
-	ships: argShips,
+	board,
+	setBoard,
+	enemyBoard,
+	setEnemyBoard,
+	size,
+	ships,
+    setShips,
 	active,
 	endTurn,
 	player,
+	attackEnemy,
+	ref,
 }) => {
-	const size = argSize || 10;
-	const [ships, setShips] = useState(
-		(argShips || [2, 3, 3, 4, 5]).map((ship) => new Ship(ship))
-	);
+	const [shipsPlaced, setShipsPlaced] = useState(false);
 
-	const [board, setBoard] = useState(_makeBoard(size));
+	const onAttack = (e, x, y) => {
+		if (!enemyBoard[x][y]) {
+			const res = attackEnemy(e, x, y);
+
+			setEnemyBoard(updateBoard(res, [x, y]));
+		}
+	};
 
 	function updateBoard(newVal, [x, y]) {
 		const newBoard = [...board];
 		newBoard[x][y] = newVal;
-		setBoard(newBoard);
+		return newBoard;
 	}
 
 	const getNextIndex = () => {
@@ -99,7 +110,7 @@ const Player = ({
 						")"
 				);
 			// console.log("placing " + x + ", " + y);
-			updateBoard(index, [x, y]);
+			setBoard(updateBoard(index, [x, y]));
 		});
 		console.log("about to new ship this bith");
 		setShips(
@@ -117,37 +128,32 @@ const Player = ({
 			return;
 		}
 		if (typeof board[x][y] !== "number") {
-			updateBoard(-1, [x, y]);
+			setBoard(updateBoard(-1, [x, y]));
 			return;
 		}
 		ships[board[x][y]].hit();
-		updateBoard(-2, [x, y]);
+		setBoard(updateBoard(-2, [x, y]));
 		if (isAllSunk()) {
 			console.log("you win");
 		}
 	}
 
 	const onClick = (e, x, y) => {
-		console.log("idekkkkkk");
-		const i = getNextIndex();
-		if (i === -1) return sendAttack(e, x, y);
-		return ((e, x, y) => sendPlaceShip(e, x, y, i))(e, x, y);
+		if (shipsPlaced === false) {
+			const i = getNextIndex();
+			if (i === -1) {
+				setShipsPlaced(true);
+				return sendAttack(e, x, y);
+			}
+			return ((e, x, y) => sendPlaceShip(e, x, y, i))(e, x, y);
+		}
+		return sendAttack(e, x, y);
 	};
-
-	// Upon placing a ship the onclick should change to place the next ship; once all ships have been placed it should be set to attack, and the board should update from that point onward toggling between perspectives to attack and watch the enemy's attacks
 
 	function isAllSunk() {
 		return ships
 			.filter((ship) => typeof ship != "number")
 			.every((ship) => ship.isSunk());
-	}
-
-	function _makeBoard(size) {
-		size = _testPositiveInt(size);
-
-		const arr = [...Array(size)].map((e) => Array(size).fill(null));
-		//arr.forEach((col, y) => arr[y] = col.map((val, x) => col[x] = "" + x + ", " + y))
-		return arr;
 	}
 
 	function _testPositiveInt(input) {
@@ -165,106 +171,28 @@ const Player = ({
 		return num;
 	}
 
+	useImperativeHandle(ref, () => ({
+		sendAttack: sendAttack,
+	}));
+
 	return (
 		<div className={"board-wrapper" + (active ? " active" : "")}>
 			<h2>
 				{player}, {getNextIndex() >= 0 ? "place your ships" : "attack"}
 			</h2>
 			<Board board={board} onClick={onClick} size={size} />
+			{shipsPlaced && (
+				<Board
+					isEnemy={true}
+					board={enemyBoard}
+					onClick={onAttack}
+					size={size}
+				/>
+			)}
 		</div>
 	);
 };
 
-class Ship {
-	constructor(length, x, y, rotation) {
-		this.length = length || this._getRandomLength(5);
-		this.hits = 0;
-		this.x = typeof x === "number" ? x : null;
-		this.y = typeof y === "number" ? y : null;
-		this.rotation = typeof rotation === "number" ? rotation : null;
-		this._coordList =
-			this.x !== null && this.x !== null && this.x !== null
-				? this.getShipCoords(
-						this.length,
-						[
-							this._testPositiveIntOrZero(x),
-							this._testPositiveIntOrZero(y),
-						],
-						this._testPositiveIntOrZero(rotation)
-				  )
-				: null;
-	}
 
-	getShipCoords(arglen, [argx, argy], argrotation) {
-		if (this._coordList) return this._coordList;
-		const [x, y] = [argx, argy] || [this.x, this.y];
-		const rotation = argrotation || this.rotation;
-		const len = arglen || this.length;
-		const coordList = Ship.getShipCoords(len, [x, y], rotation);
-		this._coordList = coordList;
-		return coordList;
-	}
-
-	isPlaced() {
-		return this.x !== null && this.y !== null && this.rotation !== null;
-	}
-
-	static getShipCoords(len, [x, y], rotation) {
-		const coordList = [];
-
-		const isRotEven = rotation % 2 === 0;
-
-		for (let i = 0; i < len; i++) {
-			const newX = isRotEven ? x : rotation < 2 ? x + i : x - i;
-
-			const newY = !isRotEven ? y : rotation < 2 ? y - i : y + i;
-			coordList.push([newX, newY]);
-		}
-		return coordList;
-	}
-
-	isSunk() {
-		return this.hits >= this.length;
-	}
-
-	hit() {
-		this.hits += 1;
-		console.log("hit number " + this.hits);
-		if (this.isSunk()) {
-			console.log("sunk");
-		}
-	}
-
-	set length(len) {
-		this._length = this._testPositiveInt(len);
-	}
-	get length() {
-		return this._length;
-	}
-
-	_testPositiveIntOrZero(input) {
-		const num = parseInt(input);
-		if (num !== Number(num)) {
-			throw new Error(
-				"Wrong type or format (" + num + "), expected a positive int"
-			);
-		}
-		return num;
-	}
-
-	_testPositiveInt(input) {
-		const num = parseInt(input);
-		this._testPositiveIntOrZero(num);
-		if (num < 1) {
-			throw new Error(
-				"Wrong type or format (" + num + "), expected a positive int"
-			);
-		}
-		return num;
-	}
-	_getRandomLength(max) {
-		return Math.floor(Math.random() * max) + 1;
-	}
-}
 
 export default Player;
