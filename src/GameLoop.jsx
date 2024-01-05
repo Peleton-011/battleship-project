@@ -1,5 +1,5 @@
 // import GameBoard  "./board";false
-import Board from "./components/Board";
+import Player from "./components/Player";
 import NextTurn from "./components/NextTurn";
 import { useState } from "react";
 
@@ -18,14 +18,25 @@ const GameLoop = ({ isSinglePlayer }) => {
 		console.log("end turn");
 	};
 
+	const p1Name = "Player 1";
+	const p2Name = "Player 2";
+
 	return (
 		<div>
-			<Board active={currentBoard && !turnEnded} endTurn={endTurn} />
-			<Board active={!currentBoard && !turnEnded} endTurn={endTurn} />
+			<Player
+				active={currentBoard && !turnEnded}
+				endTurn={endTurn}
+				player={p1Name}
+			/>
+			<Player
+				active={!currentBoard && !turnEnded}
+				endTurn={endTurn}
+				player={p2Name}
+			/>
 			{!isSinglePlayer && (
 				<NextTurn
 					active={turnEnded}
-					player={currentBoard ? "Player 1" : "Player 2"}
+					player={currentBoard ? p1Name : p2Name}
 					nextTurn={() => changeTurn()}
 				/>
 			)}
