@@ -180,10 +180,15 @@ const Player = ({
 			<h2>
 				{player}, {getNextIndex() >= 0 ? "place your ships" : "attack"}
 			</h2>
-			<Board board={board} onClick={onClick} size={size} />
+			<Board
+				board={board}
+				onClick={onClick}
+				size={size}
+				isSmall={shipsPlaced}
+			/>
 			{shipsPlaced && (
 				<Board
-					isEnemy={true}
+					isSmall={!shipsPlaced}
 					board={enemyBoard}
 					onClick={onAttack}
 					size={size}

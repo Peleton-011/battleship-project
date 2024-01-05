@@ -48,18 +48,27 @@
 	height: 100%;
 }
 
-.board-wrapper, .next-turn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease-in;
+.board-wrapper,
+.next-turn {
+	position: absolute;
+	top: 50%;
+	left: 40%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.5s ease-in;
 }
-.board-wrapper.active, .next-turn.active {
-    opacity: 1;
-    pointer-events: all;
+.board-wrapper.active,
+.next-turn.active {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.board.small {
+	position: absolute;
+	top: 75%;
+	left: 125%;
+	transform: translate(-50%, -50%) scale(0.5);
 }
 
 @media (prefers-reduced-motion: no-preference) {
