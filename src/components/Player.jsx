@@ -31,7 +31,7 @@ const Player = ({
 			/>
 			{shipsPlaced && (
 				<Board
-					isSmall={!shipsPlaced}
+					isSmall={false}
 					board={enemyBoard}
 					onClick={attack}
 					size={size}
