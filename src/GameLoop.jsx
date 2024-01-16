@@ -67,7 +67,7 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 	) => {
 		return (e, [x, y]) => {
 			if (shipsPlaced[shipsPlacedIndex]) return;
-			const index = getNextIndex(ships);
+			const index = getNextIndex(board, ships);
 			console.log("Clickity Click! (" + x + ", " + y + ")");
 
 			const rot = getRotation(getMousePos(e));
@@ -96,7 +96,7 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 			setShips(
 				ships.map((ship, i) => {
 					if (i === index) {
-						return new Ship(len, x, y, rotation);
+						return new Ship(len, x, y, rot);
 					}
 					return ship;
 				})
@@ -210,9 +210,15 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 				active={currentBoard && !turnEnded}
 				player={p1Name}
 				//
-				placeShip={getPlaceShip(board1, setBoard1, ships1, setShips1)}
+				placeShip={getPlaceShip(
+					board1,
+					setBoard1,
+					ships1,
+					setShips1,
+					0
+				)}
 				attack={getAttack(board2, setBoard2, ships2)}
-				shipsPlaced={shipsPlaced}
+				shipsPlaced={shipsPlaced[0]}
 			/>
 			<Player
 				nextIndex={getNextIndex(board2, ships2)}
@@ -224,9 +230,15 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 				active={!currentBoard && !turnEnded}
 				player={p2Name}
 				//
-				placeShip={getPlaceShip(board2, setBoard2, ships2, setShips2)}
+				placeShip={getPlaceShip(
+					board2,
+					setBoard2,
+					ships2,
+					setShips2,
+					1
+				)}
 				attack={getAttack(board1, setBoard1, ships1)}
-				shipsPlaced={shipsPlaced}
+				shipsPlaced={shipsPlaced[1]}
 			/>
 			{!isSinglePlayer && (
 				<NextTurn
