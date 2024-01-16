@@ -5,7 +5,12 @@ import { useState, useEffect, useRef } from "react";
 const Board = ({ size, board: argBoard, onClick, isSmall }) => {
 	const board = isSmall
 		? argBoard
-		: argBoard.map((col, i) => {
+		: [
+				Array(size)
+					.fill(null)
+					.map((e, i) => i),
+				...argBoard,
+		  ].map((col, i) => {
 				const newElem =
 					i === 0 ? null : (i + 9).toString(36).toUpperCase();
 				return [newElem, ...col];
