@@ -1,18 +1,14 @@
 import React from "react";
-import Column from "./Column";
+import Cell from "./Cell";
 import { useState, useEffect, useRef } from "react";
 
 const Board = ({ size, board: argBoard, onClick, isSmall }) => {
 	const board = isSmall
 		? argBoard
-		: [
-				Array(size)
-					.fill(null)
-					.map((e, i) => i + 1),
-				...argBoard,
-		  ].map((col, i) => {
-				const newElem = i === 0 ? null : (i + 9).toString(36).toUpperCase();
-                return [newElem, ...col]
+		: argBoard.map((col, i) => {
+				const newElem =
+					i === 0 ? null : (i + 9).toString(36).toUpperCase();
+				return [newElem, ...col];
 		  });
 
 	console.log(board);
@@ -21,13 +17,19 @@ const Board = ({ size, board: argBoard, onClick, isSmall }) => {
 		<div className={"board" + (isSmall ? " small" : "")}>
 			{board.map((col, i) => {
 				return (
-					<Column
-						key={i}
-						col={i}
-						len={size}
-						content={col}
-						onclick={onClick}
-					/>
+					<div className="column" key={i}>
+						{col.map((val, j) => {
+							return (
+								<Cell
+									key={j}
+									col={i}
+									row={j}
+									content={val}
+									onclick={onClick}
+								/>
+							);
+						})}
+					</div>
 				);
 			})}
 		</div>
