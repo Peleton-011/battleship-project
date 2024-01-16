@@ -119,6 +119,7 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 			}
 			if (typeof board[x][y] !== "number") {
 				setBoard(updateBoard(-1, [x, y], board));
+				endTurn();
 				return;
 			}
 			ships[board[x][y]].hit();
@@ -126,17 +127,9 @@ const GameLoop = ({ isSinglePlayer, argSize, argShips }) => {
 			if (isAllSunk(ships)) {
 				console.log("you win");
 			}
-			endTurn();
+            
 		};
 	}
-
-	const onAttack = (e, x, y) => {
-		if (!enemyBoard[x][y]) {
-			const res = attackEnemy(e, x, y);
-
-			setEnemyBoard(updateBoard(res, [x, y], enemyBoard));
-		}
-	};
 	///////////////////////////////////////////////////////////////////////////
 
 	const getNextIndex = (board, ships) => {
